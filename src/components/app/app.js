@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Header from '../header';
 import ProductContainer from '../product-container';
@@ -8,6 +8,22 @@ import Pagination from '../pagination';
 import './app.scss'
 
 export default function App () {
+
+    const [ pagination, setPagination ] = useState({page: 0, totalPages: 0});
+
+    useEffect(() => {
+        setPagination({page: 6, totalPages: 10})
+    }, [])
+
+    const changePage = (page) => {
+        setPagination(prev => {
+            return {
+                ...prev,
+                page
+            };
+        })
+    }
+
     return (
         <div className="wrapper">
             <Header />
@@ -15,7 +31,8 @@ export default function App () {
                 <FilterContainer />
                 <ProductContainer />
             </div>
-            <Pagination page={6} totalPages={10}/>
+            <Pagination {...pagination}
+                changePage={changePage}/>
         </div>
     )
 }

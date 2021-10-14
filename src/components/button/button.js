@@ -9,7 +9,7 @@ export default function Button (props) {
     color = '',
     size = '', 
     type = 'button',
-    onOclick = () => {}
+    onClick = () => {}
     } = props;
 
     return (
@@ -21,7 +21,7 @@ export default function Button (props) {
                 ${size? `button_${size}` : ''}`
             }
             type = {type}
-            onClick = {onOclick}
+            onClick = {onClick}
         >
             {props.children}
         </button>

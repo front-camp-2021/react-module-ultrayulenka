@@ -2,12 +2,13 @@ import React from 'react';
 import Card from '../card'
 import './card-list.scss'
 
-import { products } from './products'
 
-export default function CardList () {
+export default function CardList (props) {
 
-    const cards = products.map(product => {
-        return <Card data={product} tag='li' className="cards-list__item"  key={product.id}/>
+    const { data } = props;
+
+    const cards = data.map(item => {
+        return <Card data={item} tag='li' className="cards-list__item"  key={item.id}/>
     })
 
     return (

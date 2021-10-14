@@ -2,6 +2,7 @@ import React from 'react';
 import NavigationLink from '../navigation-link';
 import './header.scss';
 import logo from './logo.svg';
+import home from './home.svg';
 
 export default function Header () {
     return (
@@ -21,10 +22,7 @@ export default function Header () {
             <nav className="nav">
                 <NavigationLink>
                     <div className="home-icon">
-                      <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path fill-rule="evenodd" clip-rule="evenodd" d="M1 6.25L8.61984 1L16.2397 6.25V14.5C16.2397 15.3284 15.4816 16 14.5464 16H2.6933C1.75811 16 1 15.3284 1 14.5V6.25Z" stroke="#7E72F2" stroke-linecap="round" stroke-linejoin="round"/>
-                          <path d="M5.68909 16V8H11.5505V16" stroke="#7E72F2" stroke-linecap="round" stroke-linejoin="round"/>
-                      </svg>  
+                     <img src={home} alt="home"/>
                     </div>  
                 </NavigationLink>
 

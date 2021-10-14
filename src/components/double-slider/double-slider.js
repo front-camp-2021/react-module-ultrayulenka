@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import './double-slider.scss'
 
@@ -7,7 +7,8 @@ export default function DoubleSlider (props) {
         data = {},
         filterName = '',
         tag = '',
-        className = ''
+        changeFromValue = () => {},
+        changeToValue = () => {}
     } = props;
 
     const {
@@ -21,17 +22,129 @@ export default function DoubleSlider (props) {
         precision = 1
     } = data;
 
+    const sliderRef = useRef();
+    const thumbLeftRef = useRef();
+    const thumbRightRef = useRef();
+
+    let sliderProps = useRef({});
+    let thumbProps = useRef({});
+
+    const doNothing = () => {};
+
+    useEffect(() => {
+        const slider = sliderRef.current;
+
+        const fullWidth = slider.getBoundingClientRect().width;
+        const leftBoundry = slider.getBoundingClientRect().left;
+        const rightBoundry = slider.getBoundingClientRect().right;
+        const bottomBoundry = slider.getBoundingClientRect().y;
+        
+        sliderProps.current = {
+            fullWidth,
+            leftBoundry,
+            rightBoundry, 
+            bottomBoundry
+        };
+
+        const thumbLeft = thumbLeftRef.current;
+
+        const width = thumbLeft.getBoundingClientRect().width;
+        const height = thumbLeft.getBoundingClientRect().height;
+
+        thumbProps.current = {
+            width,
+            height
+        }
+        
+    }, [])
+
+    const range = max > min? max - min : 0;
+    let left = 0;
+    let right = 0;
+
+    const calcLeft = ({ min, from, range }) => {
+        const left = from - min <= 0? 0 : (from - min) / range * 100;
+        if(left + right > 100) return 100 - right;
+        return left;
+    }
+
+    const calcRight = ({ max, to, range}) => {
+        const right = max - to <= 0? 0 : (max - to) / range * 100;
+        if(right + left > 100) return 100 - left;
+        return right;
+    }
+
+    left = calcLeft({min, from: selected.from, range});
+    right = calcRight({max, to: selected.to, range});
+
+    const [activeThumb, setActiveThumb] = useState('');
+
     const CustomTag = tag? tag : 'div';
 
+    const onMoveLeft = (event) => {
+        const { leftBoundry, fullWidth } = sliderProps.current;
+        const { width } = thumbProps.current;
+        const shiftX = event.clientX - leftBoundry + width;
+        const newFrom = min + (shiftX / fullWidth * range);
+        changeFromValue({filterName, from: newFrom, precision});
+    }
+
+    const onMoveRight = (event) => {
+        const { rightBoundry, fullWidth } = sliderProps.current;
+        const shiftX = rightBoundry - event.clientX;
+        const newTo = max - (shiftX / fullWidth * range);
+        changeToValue({filterName, to: newTo, precision});
+    }
+
+    const onPointerUpLeft = () => {
+        setActiveThumb('');
+        const thumbLeft = thumbLeftRef.current;
+        thumbLeft.classList.remove("range-slider_dragging");
+    }
+
+    const onPointerUpRight = () => {
+        setActiveThumb('');
+        const thumbRight = thumbRightRef.current;
+        thumbRight.classList.remove("range-slider_dragging");
+    }
+
+    const onPointerDownLeft = (event) => {
+        event.preventDefault();
+        setActiveThumb('left');
+        const thumbLeft = thumbLeftRef.current;
+        thumbLeft.classList.add("range-slider_dragging");
+    }
+    const onPointerDownRight = (event) => {
+        event.preventDefault();
+        setActiveThumb('right');
+        const thumbRight = thumbRightRef.current;
+        thumbRight.classList.add("range-slider_dragging");
+    }
+
     return (
-        <CustomTag className={className}>
-            <h4 class="filter-item__title">{filterName}</h4>
+        <CustomTag className="filter-item"
+        onPointerMove={ activeThumb === 'left'?
+                        onMoveLeft :
+                        activeThumb === 'right'?
+                        onMoveRight : doNothing}
+        onPointerUp={activeThumb === 'left'?
+                    onPointerUpLeft :
+                    activeThumb === 'right'?
+                    onPointerUpRight : doNothing}>
+            <h4 className="filter-item__title">{filterName}</h4>
             <div className="range-slider">
                 <span>{formatValue(selected.from)}</span>
-                <div className="range-slider__inner">
-                <span className="range-slider__progress"></span>
-                <span className="range-slider__thumb-left"></span>
-                <span className="range-slider__thumb-right"></span>
+                <div ref={sliderRef} className="range-slider__inner">
+                    <span className="range-slider__progress" 
+                          style={{left: `${left}%`, right: `${right}%`}}/>
+                    <span ref={thumbLeftRef} 
+                          className="range-slider__thumb-left" 
+                          style={{left: `${left}%`}}
+                          onPointerDown={onPointerDownLeft}/>
+                    <span ref={thumbRightRef} 
+                          className="range-slider__thumb-right" 
+                          style={{right: `${right}%`}}
+                          onPointerDown={onPointerDownRight}/>
                 </div>
                 <span>{formatValue(selected.to)}</span>
             </div>
