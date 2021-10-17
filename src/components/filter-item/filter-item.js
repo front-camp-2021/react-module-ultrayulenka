@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
 
+import { useDispatch } from 'react-redux';
+import { addFilter, removeFilter } from '../../features/params/actions';
+
 import './filter-item.scss'
 
 export default function FilterItem (props) {
 
-    const { title = '', value = '', amount = 0, checked, changeChecked = () => {} } = props;
+    const dispatch = useDispatch();
+
+    const { title = '', value = '', amount = 0, checked } = props;
 
     return (
         <li className="options-list__item">
@@ -13,7 +18,13 @@ export default function FilterItem (props) {
                    id={value} 
                    name={title} 
                    checked={checked}
-                   onChange={() => changeChecked(value)}/>
+                   onChange={() => {
+                       if(checked) {
+                           dispatch(removeFilter(value));
+                       } else {
+                           dispatch(addFilter(value));
+                       }
+                   }}/>
             <label className="options-list__label" htmlFor={value}>{title}</label>
             </div>
             <span className="options-list__amount">{amount}</span>

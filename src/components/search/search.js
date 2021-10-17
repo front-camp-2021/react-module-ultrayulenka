@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
+
+import { useSelector, useDispatch } from "react-redux";
+import { selectSearch } from '../../features/params/selectors';
+import { changeSearchQuery } from '../../features/params/actions';
 
 import icon from './icon.svg';
 
@@ -6,11 +10,8 @@ import './search.scss'
 
 export default function Search () {
 
-    const [searchQuery, setSearchQuery] = useState('');
-
-    const onChange = (event) => {
-        setSearchQuery(event.target.value);
-    }
+    const searchQuery = useSelector(selectSearch);
+    const dispatch = useDispatch();
 
     return (
         <div className="search">
@@ -19,7 +20,7 @@ export default function Search () {
                        type="text" 
                        placeholder="Search"
                        value={searchQuery}
-                       onChange={onChange}/>
+                       onChange={(event) =>  dispatch(changeSearchQuery(event.target.value))}/>
                 <button className="search-button "type="submit">
                     <img className="searchbar__icon" src={icon} alt="Search"/>
                 </button>

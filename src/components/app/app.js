@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
+import { store } from "../../store/store";
+import { Provider } from "react-redux";
+
 import Header from '../header';
 import ProductContainer from '../product-container';
 import FilterContainer from '../filter-container';
@@ -9,9 +12,9 @@ import './app.scss'
 
 export default function App () {
 
-    const [ pagination, setPagination ] = useState({page: 0, totalPages: 0});
+    //const [ pagination, setPagination ] = useState({page: 0, totalPages: 0});
 
-    useEffect(() => {
+    /*useEffect(() => {
         setPagination({page: 6, totalPages: 10})
     }, [])
 
@@ -22,17 +25,18 @@ export default function App () {
                 page
             };
         })
-    }
+    }*/
 
     return (
         <div className="wrapper">
-            <Header />
-            <div className="content">
-                <FilterContainer />
-                <ProductContainer />
-            </div>
-            <Pagination {...pagination}
-                changePage={changePage}/>
+            <Provider store={store}>
+                <Header />
+                <div className="content">
+                    <FilterContainer />
+                    <ProductContainer />
+                </div>
+                <Pagination />
+            </Provider>
         </div>
     )
 }

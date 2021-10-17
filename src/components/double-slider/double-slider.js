@@ -1,14 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 
+import { useDispatch } from "react-redux";
+import { changeRangeToValue, changeRangeFromValue } from '../../features/params/actions'
+
 import './double-slider.scss'
 
 export default function DoubleSlider (props) {
     const {
         data = {},
         filterName = '',
-        tag = '',
-        changeFromValue = () => {},
-        changeToValue = () => {}
+        tag = ''
     } = props;
 
     const {
@@ -28,6 +29,8 @@ export default function DoubleSlider (props) {
 
     let sliderProps = useRef({});
     let thumbProps = useRef({});
+
+    const dispatch = useDispatch();
 
     const doNothing = () => {};
 
@@ -74,6 +77,30 @@ export default function DoubleSlider (props) {
         return right;
     }
 
+    const checkFrom = ({ min, from, to }) => {
+        if(from < min) {
+            return min;
+        } 
+        const res = from - min;
+        if(to - res <= min) {
+            return to;
+        } else {
+            return from;
+        }
+    }
+
+    const checkTo = ({ max, from, to }) => {
+        if(to > max) {
+            return max;
+        }
+        const res = max - to;
+        if(from + res >= max) {
+            return from;
+        } else {
+            return to;
+        };
+    }
+
     left = calcLeft({min, from: selected.from, range});
     right = calcRight({max, to: selected.to, range});
 
@@ -85,15 +112,23 @@ export default function DoubleSlider (props) {
         const { leftBoundry, fullWidth } = sliderProps.current;
         const { width } = thumbProps.current;
         const shiftX = event.clientX - leftBoundry + width;
-        const newFrom = min + (shiftX / fullWidth * range);
-        changeFromValue({filterName, from: newFrom, precision});
+        const newFrom = checkFrom({
+            min,
+            from: min + (shiftX / fullWidth * range),
+            range
+        });
+        dispatch(changeRangeFromValue({ name: filterName, from: newFrom, precision }));
     }
 
     const onMoveRight = (event) => {
         const { rightBoundry, fullWidth } = sliderProps.current;
         const shiftX = rightBoundry - event.clientX;
-        const newTo = max - (shiftX / fullWidth * range);
-        changeToValue({filterName, to: newTo, precision});
+        const newTo = checkTo({
+            max,
+            to: max - (shiftX / fullWidth * range),
+            range
+        });
+        dispatch(changeRangeToValue({ name: filterName, to: newTo, precision }));
     }
 
     const onPointerUpLeft = () => {
