@@ -1,8 +1,5 @@
 import React from 'react';
 
-import { useSelector } from "react-redux";
-import { selectProducts } from '../../features/products/selectors';
-
 import Card from '../card'
 import './card-list.scss'
 

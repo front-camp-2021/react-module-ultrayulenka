@@ -4,9 +4,14 @@
 @use "../../scss-utils/media-mixins" as *;
 
 .logo-container {
-    padding: 0 5px;
+    padding: 0 0 0 5px;
     display: flex;
     margin-bottom: 1.75vh;
+    justify-content: space-between;
+
+    &__item {
+        display: flex;
+    }
 }
 
 .logo {
@@ -43,12 +48,4 @@
     @include mobile {
         font-size: map.get($logo-font-sizes, "mobile");
     }
-}
-
-.nav {
-    display: flex;
-}
-
-.home-icon {
-    height: 17px;
 }

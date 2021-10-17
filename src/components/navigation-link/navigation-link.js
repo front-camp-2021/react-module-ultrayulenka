@@ -1,16 +1,21 @@
 import React from 'react';
+
+import { NavLink } from "react-router-dom";
+
 import './navigation-link.scss';
 
 export default function NavigationLink (props) {
-    const { isCurrent = false, href = '#' } = props;
+    const { isCurrent = false, to } = props;
 
     return (
         <>
-            <a href={href} className={`nav__link ${isCurrent? 'nav__link_current': ''}`}>
+            <NavLink  
+            to={to} 
+            className={`nav__link ${isCurrent? 'nav__link_current': ''}`}>
                 <div className="home-icon">
                     {props.children}
                 </div>  
-            </a>
+            </NavLink>
             {!isCurrent && <div className="arrows arrows_right"></div>}
         </>
     )

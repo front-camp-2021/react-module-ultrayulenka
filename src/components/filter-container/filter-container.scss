@@ -51,7 +51,7 @@
         }
     }
 
-    .button {
+    &__button {
         @include tablet {
             &_large {
                 display: none;

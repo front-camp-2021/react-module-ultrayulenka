@@ -30,6 +30,11 @@
         text-align: center;
     }
 
+    &_medium {
+        display: block;
+        @include box(25%, 56px);
+    }
+
     &_small {
         @include box(47px, 40px);
         background-color: $bg-color-container;

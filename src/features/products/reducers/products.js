@@ -1,8 +1,9 @@
 import { 
     CHANGE_WISHLIST_STATUS,
+    RESET_ALL_WISHLIST_STATUSES,
     ADD_TO_CART,
     REMOVE_FROM_CART,
-    CHANGE_QUANTITY 
+    CHANGE_QUANTITY
 } from '../actions';
 
 const productsInitialState = [
@@ -90,6 +91,10 @@ function products (state = productsInitialState, action) {
 
                 return product;
             });
+        }
+
+        case RESET_ALL_WISHLIST_STATUSES: {
+            return state.map(product => ({...product, inWishlist: false }));
         }
 
         case ADD_TO_CART: {

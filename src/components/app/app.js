@@ -1,42 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-import { store } from "../../store/store";
-import { Provider } from "react-redux";
+import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 
-import Header from '../header';
-import ProductContainer from '../product-container';
-import FilterContainer from '../filter-container';
-import Pagination from '../pagination';
+import Layout from '../layout';
+import ProductsPage from '../../pages/products-page';
+import WishlistPage from '../../pages/wishlist-page';
+import CartPage from '../../pages/cart-page';
+import Home from '../../pages/home';
+import NotFound from '../../pages/not-found'
 
 import './app.scss'
 
 export default function App () {
 
-    //const [ pagination, setPagination ] = useState({page: 0, totalPages: 0});
-
-    /*useEffect(() => {
-        setPagination({page: 6, totalPages: 10})
-    }, [])
-
-    const changePage = (page) => {
-        setPagination(prev => {
-            return {
-                ...prev,
-                page
-            };
-        })
-    }*/
-
     return (
-        <div className="wrapper">
-            <Provider store={store}>
-                <Header />
-                <div className="content">
-                    <FilterContainer />
-                    <ProductContainer />
-                </div>
-                <Pagination />
-            </Provider>
-        </div>
+        <BrowserRouter>
+            <Layout>
+                <Switch>
+                    <Route exact path="/">
+                        <Home />
+                    </Route>
+
+                    <Route exact path="/electronics">
+                        <ProductsPage />
+                    </Route>
+
+                    <Route exact path="/wishlist">
+                        <WishlistPage />
+                    </Route>
+
+                    <Route exact path="/cart">
+                        <CartPage />
+                    </Route>
+
+                    <Route exact path="/not-found" component={NotFound} />
+
+                    <Redirect to="/not-found" />
+                </Switch>
+            </Layout>
+        </BrowserRouter>
     )
 }

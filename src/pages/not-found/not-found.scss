@@ -1,0 +1,21 @@
+@use "../../scss-utils/mixins" as *;
+
+.not-found {
+    margin: 2vh auto 0 auto;
+    width: 700px;
+    text-align: center;
+
+    &__img {
+        width: 300px;
+        margin-right: 40px;
+    }
+
+    &__container {
+        align-self: center;
+    }
+
+    &__text {
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+}
