@@ -3,10 +3,9 @@ import { useDispatch } from "react-redux";
 
 import Button from '../button'
 
-import { 
-    changeWishlistStatus,
-    addToCart 
-} from "../../features/products/actions";
+import { changeWishlistStatus } from '../../features/wishlist/actions'
+
+import { addToCart } from "../../features/cart/actions";
 
 import heart from './heart.svg';
 import shoppingBag from './shopping-bag.svg';
@@ -18,18 +17,17 @@ export default function Card (props) {
     
     const dispatch = useDispatch();
 
-    const { data = {}, tag = '', className = '' } = props;
-
     const { 
-    id = '',
-    images = [],
-    title = '',
-    rating = 0,
-    price = 0,
-    category = '',
-    brand = '',
-    inWishlist = false,
-    inCartQuantity = 0 } = data;
+        id = '',
+        images = [],
+        title = '',
+        rating = 0,
+        price = 0,
+        inWishlist = false,
+        inCart = false,
+        tag = '', 
+        className = '' 
+    } = props;
 
     const CustomTag = tag? tag : 'div';
     
@@ -57,14 +55,20 @@ export default function Card (props) {
             </div>
             <div className="card__button-group">
                 <Button className="card__button"
-                    onClick={() => dispatch(changeWishlistStatus(id))}>
+                    onClick={() => {
+                        const product = { id, images, title, rating, price };
+                        dispatch(changeWishlistStatus(product));
+                    }}>
                     <img className="button__icon" src={heart} alt="wishlist"/>
                     <span className="button__text">{`${inWishlist? "remove from" : "add to"} wishlist`}</span>
                 </Button>
                 <Button className="card__button" color="primary"
-                    onClick={() => dispatch(addToCart(id))}>
+                    onClick={() => {
+                        const product = { id, images, title, price };
+                        dispatch(addToCart(product));
+                    }}>
                     <img className="button__icon" src={shoppingBag} alt="Add to cart"/>
-                    <span className="button__text">{`${inCartQuantity > 0? "add more to" : "add to"} cart`}</span>
+                    <span className="button__text">{`${inCart? "add more to" : "add to"} cart`}</span>
                 </Button>
             </div>
         </CustomTag>

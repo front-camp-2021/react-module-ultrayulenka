@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useHistory } from 'react-router-dom';
 import { useSelector } from "react-redux";
-import { selectProductsInCart } from '../../features/products/selectors';
+import { selectProductsInCart } from '../../features/cart/selectors';
 
 import Button from '../button';
 import CartTableRow from '../cart-table-item/cart-table-row';
@@ -15,7 +15,7 @@ export default function CartTable (props) {
     const { formatValue = value => value } = props
 
     const products = useSelector(selectProductsInCart);
-    const total = products.reduce((prev, product) => { return prev + (product.price * product.inCartQuantity)}, 0);
+    const total = products.reduce((prev, product) => { return prev + (product.price * product.quantity)}, 0);
     const history = useHistory();
 
     return (

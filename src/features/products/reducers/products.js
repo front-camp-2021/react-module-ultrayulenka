@@ -1,11 +1,3 @@
-import { 
-    CHANGE_WISHLIST_STATUS,
-    RESET_ALL_WISHLIST_STATUSES,
-    ADD_TO_CART,
-    REMOVE_FROM_CART,
-    CHANGE_QUANTITY
-} from '../actions';
-
 const productsInitialState = [
     {
         "id": "76w0hz7015kkr9kjkav",
@@ -18,7 +10,6 @@ const productsInitialState = [
         "price": 15999,
         "category": "laptops",
         "brand": "acer",
-        "inWishlist": false,
         "inCartQuantity": 0
     },
     {
@@ -32,7 +23,6 @@ const productsInitialState = [
         "price": 21500,
         "category": "laptops",
         "brand": "acer",
-        "inWishlist": false,
         "inCartQuantity": 0
     },
     {
@@ -46,7 +36,6 @@ const productsInitialState = [
         "price": 22999,
         "category": "laptops",
         "brand": "acer",
-        "inWishlist": false,
         "inCartQuantity": 0
     },
     {
@@ -60,7 +49,6 @@ const productsInitialState = [
         "price": 28999,
         "category": "laptops",
         "brand": "acer",
-        "inWishlist": false,
         "inCartQuantity": 0
     },
     {
@@ -73,71 +61,12 @@ const productsInitialState = [
         "price": 22500,
         "category": "laptops",
         "brand": "acer",
-        "inWishlist": false,
         "inCartQuantity": 0
     }
 ];
 
 function products (state = productsInitialState, action) {
     switch(action.type) {
-        case CHANGE_WISHLIST_STATUS: {
-            return state.map(product => {
-                if(product.id === action.payload) {
-                    return {
-                        ...product,
-                        inWishlist: !product.inWishlist
-                    };
-                } 
-
-                return product;
-            });
-        }
-
-        case RESET_ALL_WISHLIST_STATUSES: {
-            return state.map(product => ({...product, inWishlist: false }));
-        }
-
-        case ADD_TO_CART: {
-            return state.map(product => {
-                if(product.id === action.payload) {
-                    alert(`${product.title} added to the cart`);
-                    return {
-                        ...product,
-                        inCartQuantity: product.inCartQuantity + 1
-                    };
-                }
-
-                return product;
-            });
-        }
-
-        case REMOVE_FROM_CART: {
-            return state.map(product => {
-                if(product.id === action.payload) {
-                    return {
-                        ...product,
-                        inCartQuantity: 0
-                    };
-                }
-
-                return product;
-            });
-        }
-
-        case CHANGE_QUANTITY: {
-            const { quantity, id } = action.payload;
-
-            return state.map(product => {
-                if(product.id === id) {
-                    return {
-                        ...product,
-                        inCartQuantity: quantity
-                    };
-                }
-
-                return product;
-            });
-        }
 
         default: return state;
     }

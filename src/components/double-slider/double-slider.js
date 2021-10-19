@@ -32,7 +32,9 @@ export default function DoubleSlider (props) {
 
     const dispatch = useDispatch();
 
-    const doNothing = () => {};
+    const [activeThumb, setActiveThumb] = useState('');
+
+    const CustomTag = tag? tag : 'div';
 
     useEffect(() => {
         const slider = sliderRef.current;
@@ -104,10 +106,6 @@ export default function DoubleSlider (props) {
     left = calcLeft({min, from: selected.from, range});
     right = calcRight({max, to: selected.to, range});
 
-    const [activeThumb, setActiveThumb] = useState('');
-
-    const CustomTag = tag? tag : 'div';
-
     const onMoveLeft = (event) => {
         const { leftBoundry, fullWidth } = sliderProps.current;
         const { width } = thumbProps.current;
@@ -161,11 +159,11 @@ export default function DoubleSlider (props) {
         onPointerMove={ activeThumb === 'left'?
                         onMoveLeft :
                         activeThumb === 'right'?
-                        onMoveRight : doNothing}
+                        onMoveRight : () => {}}
         onPointerUp={activeThumb === 'left'?
                     onPointerUpLeft :
                     activeThumb === 'right'?
-                    onPointerUpRight : doNothing}>
+                    onPointerUpRight : () => {}}>
             <h4 className="filter-item__title">{filterName}</h4>
             <div className="range-slider">
                 <span>{formatValue(selected.from)}</span>

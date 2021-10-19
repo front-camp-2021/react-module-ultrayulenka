@@ -13,11 +13,11 @@ export default function CartTableRow (props) {
         title = '', 
         price = 0, 
         images = [], 
-        inCartQuantity = 0, 
+        quantity = 0, 
         formatValue = value => value
     } = props;
 
-    const subtotal = price * inCartQuantity;
+    const subtotal = price * quantity;
     const dispatch = useDispatch();
 
     return (
@@ -37,7 +37,7 @@ export default function CartTableRow (props) {
                 <input 
                     type="number" 
                     class="form-control text-center" 
-                    value={inCartQuantity}
+                    value={quantity}
                     min={1}
                     onChange={event => {dispatch(changeQuantity({id, quantity: event.target.value}))}}/>
             </td>
