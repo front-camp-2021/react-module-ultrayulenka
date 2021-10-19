@@ -1,7 +1,7 @@
 import {
     CHANGE_PAGE,
     CHANGE_TOTAL_PAGES
-} from '../actions'
+} from './actions'
 
 const pagesInitialState = {
     page: 1,

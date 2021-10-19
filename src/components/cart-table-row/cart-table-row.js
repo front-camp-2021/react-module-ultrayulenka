@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useDispatch } from "react-redux";
-import { removeFromCart, changeQuantity } from '../../features/products/actions';
+import { removeFromCart, changeQuantity } from '../../features/cart/actions';
 
 import './cart-table-row.scss';
 import 'font-awesome/css/font-awesome.min.css';
@@ -23,11 +23,11 @@ export default function CartTableRow (props) {
     return (
         <tr>
             <td data-th="Product">
-            <div class="row">
-                <div class="col-sm-4 hidden-xs">
-                    <img src={images[0]} alt="" class="img-responsive" className="cart__image"/>
+            <div className="row">
+                <div className="col-sm-4 hidden-xs">
+                    <img src={images[0]} alt="" className="img-responsive" className="cart__image"/>
                 </div>
-                <div class="col-sm-8">
+                <div className="col-sm-8">
                     <p className="cart__title">{title}</p>
                 </div>
             </div>
@@ -36,17 +36,17 @@ export default function CartTableRow (props) {
             <td data-th="Quantity">
                 <input 
                     type="number" 
-                    class="form-control text-center" 
+                    className="form-control text-center" 
                     value={quantity}
                     min={1}
                     onChange={event => {dispatch(changeQuantity({id, quantity: event.target.value}))}}/>
             </td>
-            <td data-th="Subtotal" class="text-center">{formatValue(subtotal)}</td>
-            <td class="actions" data-th="">
+            <td data-th="Subtotal" className="text-center">{formatValue(subtotal)}</td>
+            <td className="actions" data-th="">
                 <button 
-                class="btn btn-danger btn-sm"
+                className="btn btn-danger btn-sm"
                 onClick={() => {dispatch(removeFromCart(id))}}>
-                    <i class="fa fa-trash-o"></i>
+                    <i className="fa fa-trash-o"></i>
                 </button>
             </td>
         </tr>

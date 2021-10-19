@@ -5,8 +5,8 @@ import { selectProducts } from '../../features/products/selectors';
 import { selectProductsInWishlistIds } from '../../features/wishlist/selectors';
 import { selectProductsInCartIds } from '../../features/cart/selectors';
 
-import CardList from '../card-list';
-import Search from '../search';
+import CardList from '../../components/card-list';
+import Search from '../../components/search';
 
 import './product-container.scss';
 

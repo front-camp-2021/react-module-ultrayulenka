@@ -1,7 +1,7 @@
 import { 
     CHANGE_WISHLIST_STATUS,
     RESET_ALL_WISHLIST_STATUSES,
-} from '../actions';
+} from './actions';
 
 const wishlistInitialState = [];
 

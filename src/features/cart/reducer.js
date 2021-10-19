@@ -2,7 +2,7 @@ import {
     ADD_TO_CART,
     REMOVE_FROM_CART,
     CHANGE_QUANTITY
-} from '../actions';
+} from './actions';
 
 const cartInitialState = [];
 

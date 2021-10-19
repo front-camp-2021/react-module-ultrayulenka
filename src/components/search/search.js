@@ -1,7 +1,9 @@
 import React from 'react';
 
-import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { WISHLIST } from '../../routes'
+
+import { useSelector, useDispatch } from "react-redux";
 import { selectSearch } from '../../features/params/selectors';
 import { changeSearchQuery } from '../../features/params/actions';
 
@@ -20,13 +22,13 @@ export default function Search () {
 
     return (
         <div className="search">
-            <div class="search__header">
-                <span class="search__text">7,618 results found</span>
+            <div className="search__header">
+                <span className="search__text">7,618 results found</span>
                 <Button 
                     size="small"
                     color="primary"
-                    onClick={() => history.push('/wishlist')}>
-                    <img class="button__icon" src={heart} alt="Go to wishlist"/>
+                    onClick={() => history.push(WISHLIST)}>
+                    <img className="button__icon" src={heart} alt="Go to wishlist"/>
                 </Button>
             </div>
             <form className="searchbar">

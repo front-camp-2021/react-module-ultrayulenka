@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useHistory } from "react-router-dom";
+import { HOME } from '../../routes'
 
 import Button from '../../components/button'
 
@@ -23,7 +24,7 @@ export default function NotFound () {
                     size="medium" 
                     color="primary" 
                     className="redirect-button"
-                    onClick={() => history.push(`/`)}>
+                    onClick={() => history.push(HOME)}>
                     Go home
                 </Button>
             </div>

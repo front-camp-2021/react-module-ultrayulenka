@@ -5,7 +5,7 @@ import {
     CHANGE_RANGE_TO_VALUE, 
     CHANGE_RANGE_FROM_VALUE,
     CHANGE_SEARCH_QUERY
-} from '../actions';
+} from './actions';
 
 const paramsInitialState = {
     filters: [],

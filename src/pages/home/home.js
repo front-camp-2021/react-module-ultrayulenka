@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { useHistory } from "react-router-dom";
+import { ELECTRONICS } from '../../routes'
 
 import Button from '../../components/button'
 
@@ -18,7 +19,7 @@ export default function Home () {
                 size="medium" 
                 color="primary" 
                 className="redirect-button"
-                onClick={() => history.push(`/electronics`)}>
+                onClick={() => history.push(ELECTRONICS)}>
                 Go to electronics
             </Button>
         </div>

@@ -4,9 +4,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectFilters, selectRanges } from '../../features/params/selectors';
 import { clearAllFilters } from '../../features/params/actions';
 
-import FilterList from '../filter-list';
-import DoubleSlider from '../double-slider';
-import Button from '../button';
+import FilterList from '../../components/filter-list';
+import DoubleSlider from '../../components/double-slider';
+import Button from '../../components/button';
 
 import './filter-container.scss'
 
