@@ -1,14 +1,12 @@
 import React from 'react';
 
-import { useSelector, useDispatch } from "react-redux";
-import { selectPages } from '../../features/pages/selectors';
-import { changePage } from '../../features/pages/actions';
+import { useDispatch } from "react-redux";
+import { changePage } from '../../features/params/actions';
 
 import './pagination.scss'
 
-export default function Pagination () {
-
-    const { page, totalPages } = useSelector(selectPages);
+export default function Pagination (props) {
+    const { page, totalPages } = props;
     const dispatch = useDispatch();
 
     const items = [];
@@ -27,7 +25,9 @@ export default function Pagination () {
                 key={index}>
                 <a href="#" 
                     className="page-navigation__page-link"
-                    onPointerDown={() => dispatch(changePage(index + 1))}>
+                    onPointerDown={() => {
+                        dispatch(changePage(index + 1));
+                    }}>
                     {index + 1}
                 </a>
             </li>
@@ -38,13 +38,17 @@ export default function Pagination () {
         <nav className="page-navigation">
             <a className="page-navigation__page-link" 
                 id="prev-page"
-                onPointerDown={() => dispatch(changePage(page - 1))}/>
+                onPointerDown={() => {
+                    dispatch(changePage(page - 1));
+                }}/>
             <ul className="page-navigation__list">
                 {items.length? items : 'No pagination'}
             </ul>
             <a className="page-navigation__page-link" 
                 id="next-page"
-                onPointerDown={() => dispatch(changePage(page + 1))}/>
+                onPointerDown={() => {
+                    dispatch(changePage(page + 1));
+                }}/>
         </nav>
     )
 }

@@ -1,9 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 
 import { useDispatch } from "react-redux";
-import { changeRangeToValue, changeRangeFromValue } from '../../features/params/actions'
+import { changeRangeToValue, changeRangeFromValue } from '../../features/params/actions';
 
+import { roundValue, checkTo, checkFrom } from '../../utils'
 import './double-slider.scss'
+
 
 export default function DoubleSlider (props) {
     const {
@@ -27,41 +30,62 @@ export default function DoubleSlider (props) {
     const thumbLeftRef = useRef();
     const thumbRightRef = useRef();
 
-    let sliderProps = useRef({});
-    let thumbProps = useRef({});
-
     const dispatch = useDispatch();
 
     const [activeThumb, setActiveThumb] = useState('');
 
-    const CustomTag = tag? tag : 'div';
+    const [from, setFrom] = useState(selected.from);
+    const [to, setTo] = useState(selected.to);
 
     useEffect(() => {
+        setFrom(selected.from);
+        setTo(selected.to);
+    }, [selected])
+
+    const debouncedChangeRangeValue = useDebouncedCallback(({ value, hint='' }) => {
+        switch(hint) {
+            case 'to': {
+                dispatch(changeRangeToValue({ name: filterName, to: value, precision }));
+                break;
+            }
+            case 'from': {
+                dispatch(changeRangeFromValue({ name: filterName, from: value, precision }));
+                break;
+            }
+            default: return;
+        }
+    }, 500)
+
+    const CustomTag = tag? tag : 'div';
+
+    const getSliderProps = () => {
         const slider = sliderRef.current;
 
         const fullWidth = slider.getBoundingClientRect().width;
         const leftBoundry = slider.getBoundingClientRect().left;
         const rightBoundry = slider.getBoundingClientRect().right;
         const bottomBoundry = slider.getBoundingClientRect().y;
-        
-        sliderProps.current = {
+
+        return {
             fullWidth,
             leftBoundry,
             rightBoundry, 
             bottomBoundry
-        };
+        }
+    }
 
+    const getThumbProps = () => {
         const thumbLeft = thumbLeftRef.current;
 
         const width = thumbLeft.getBoundingClientRect().width;
         const height = thumbLeft.getBoundingClientRect().height;
 
-        thumbProps.current = {
+        return {
             width,
             height
         }
-        
-    }, [])
+    }
+
 
     const range = max > min? max - min : 0;
     let left = 0;
@@ -79,54 +103,26 @@ export default function DoubleSlider (props) {
         return right;
     }
 
-    const checkFrom = ({ min, from, to }) => {
-        if(from < min) {
-            return min;
-        } 
-        const res = from - min;
-        if(to - res <= min) {
-            return to;
-        } else {
-            return from;
-        }
-    }
-
-    const checkTo = ({ max, from, to }) => {
-        if(to > max) {
-            return max;
-        }
-        const res = max - to;
-        if(from + res >= max) {
-            return from;
-        } else {
-            return to;
-        };
-    }
-
-    left = calcLeft({min, from: selected.from, range});
-    right = calcRight({max, to: selected.to, range});
+    left = calcLeft({min, from, range});
+    right = calcRight({max, to, range});
 
     const onMoveLeft = (event) => {
-        const { leftBoundry, fullWidth } = sliderProps.current;
-        const { width } = thumbProps.current;
+        const { leftBoundry, fullWidth } = getSliderProps();
+        const { width } = getThumbProps();
         const shiftX = event.clientX - leftBoundry + width;
-        const newFrom = checkFrom({
-            min,
-            from: min + (shiftX / fullWidth * range),
-            range
-        });
-        dispatch(changeRangeFromValue({ name: filterName, from: newFrom, precision }));
+        const newFrom = checkFrom({ min, to, from: min + (shiftX / fullWidth * range)});
+        const roundedFromValue = roundValue({value: newFrom, precision})
+        setFrom(roundedFromValue);
+        debouncedChangeRangeValue({value: roundedFromValue, hint: 'from'})
     }
 
     const onMoveRight = (event) => {
-        const { rightBoundry, fullWidth } = sliderProps.current;
+        const { rightBoundry, fullWidth } = getSliderProps();
         const shiftX = rightBoundry - event.clientX;
-        const newTo = checkTo({
-            max,
-            to: max - (shiftX / fullWidth * range),
-            range
-        });
-        dispatch(changeRangeToValue({ name: filterName, to: newTo, precision }));
+        const newTo = checkTo({ max, from, to: max - (shiftX / fullWidth * range)});
+        const roundedToValue = roundValue({value: newTo, precision})
+        setTo(roundedToValue);
+        debouncedChangeRangeValue({value: roundedToValue, hint: 'to'})
     }
 
     const onPointerUpLeft = () => {
@@ -166,7 +162,7 @@ export default function DoubleSlider (props) {
                     onPointerUpRight : () => {}}>
             <h4 className="filter-item__title">{filterName}</h4>
             <div className="range-slider">
-                <span>{formatValue(selected.from)}</span>
+                <span>{formatValue(from)}</span>
                 <div ref={sliderRef} className="range-slider__inner">
                     <span className="range-slider__progress" 
                           style={{left: `${left}%`, right: `${right}%`}}/>
@@ -179,7 +175,7 @@ export default function DoubleSlider (props) {
                           style={{right: `${right}%`}}
                           onPointerDown={onPointerDownRight}/>
                 </div>
-                <span>{formatValue(selected.to)}</span>
+                <span>{formatValue(to)}</span>
             </div>
         </CustomTag>
     )

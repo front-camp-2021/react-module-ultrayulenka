@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDebouncedCallback } from 'use-debounce';
 
 import { useHistory } from "react-router-dom";
 import { WISHLIST } from '../../routes'
@@ -17,8 +18,14 @@ import './search.scss'
 export default function Search () {
 
     const searchQuery = useSelector(selectSearch);
+    const [value, setValue] = useState(searchQuery);
+
     const dispatch = useDispatch();
     const history = useHistory();
+
+    const debouncedChangeSearchQuery = useDebouncedCallback((value) => {
+        dispatch(changeSearchQuery(value));
+    }, 500)
 
     return (
         <div className="search">
@@ -35,8 +42,11 @@ export default function Search () {
                 <input className="searchbar__input" 
                        type="text" 
                        placeholder="Search"
-                       value={searchQuery}
-                       onChange={(event) =>  dispatch(changeSearchQuery(event.target.value))}/>
+                       value={value}
+                       onChange={(event) => {
+                            setValue(event.target.value);
+                            debouncedChangeSearchQuery(event.target.value);
+                       }}/>
                 <button className="search-button "type="submit">
                     <img className="searchbar__icon" src={icon} alt="Search"/>
                 </button>

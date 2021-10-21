@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { useSelector, useDispatch } from "react-redux";
 import { selectFilters, selectRanges } from '../../features/params/selectors';
+import { selectCategoryFilter, selectBrandFilter } from '../../features/filters-data/selectors'
+import { getAllFilters } from '../../features/filters-data/actions'
 import { clearAllFilters } from '../../features/params/actions';
 
 import FilterList from '../../components/filter-list';
@@ -13,70 +15,23 @@ import './filter-container.scss'
 export default function FilterContainer () {
 
     const selectedFilters = useSelector(selectFilters);
-    const selectedRanges = useSelector(selectRanges);
+    const ranges = useSelector(selectRanges);
+    const categoryFilter = useSelector(selectCategoryFilter);
+    const brandFilter = useSelector(selectBrandFilter);
+
     const dispatch = useDispatch();
 
-    const categoryFilter = {
-        title: "Category",
-        list: [
-            {
-                value: 'category=cell_phones',
-                title: 'Cell Phones',
-            },
-            {
-                value: 'category=computer_tablets',
-                title: 'Computers & Tablets',
-            },
-            {
-                value: 'category=cell_phones_accessories',
-                title: 'Cell Phone Accessories',
-            },
-            {
-                value: 'category=appliances',
-                title: 'Appliances',
-            },
-            {
-                value: 'category=audio',
-                title: 'Audio',
-            }
-        ]
-    }
-
-    const brandFilter = {
-        title: "Brand",
-        list: [
-            {
-                value: 'brand=insigni',
-                title: 'Insigni',
-              },
-              {
-                value: 'brand=samsung',
-                title: 'Samsung',
-              },
-              {
-                value: 'brand=apple',
-                title: 'Apple',
-              }
-        ]
-    }
+    useEffect(() => {
+        dispatch(getAllFilters());
+    }, [])
 
     const priceSlider = {
         filterName: 'Price',
-        data: {
-            min: 0, 
-            max: 85000,
-            precision: 0, 
-            formatValue: value => value + " UAH"
-        }
+        formatValue: value => value + " UAH"
     }
 
     const ratingSlider = {
-        filterName: 'Rating',
-        data: {
-            min: 0, 
-            max: 5,
-            precision: 2
-        }
+        filterName: 'Rating'
     }
                     
     return (
@@ -96,22 +51,33 @@ export default function FilterContainer () {
                     <DoubleSlider tag='li'
                         filterName={priceSlider.filterName}
                         data={{
-                            ...priceSlider.data, 
-                            selected: selectedRanges[priceSlider.filterName]
+                            ...priceSlider, 
+                            ...ranges[priceSlider.filterName]
                         }}/>
-                    <FilterList {...categoryFilter} 
-                        tag='li'
-                        selected={selectedFilters}
-                        />
-                    <FilterList {...brandFilter} 
-                        tag='li'
-                        selected={selectedFilters}
-                        />
+                    {
+                        categoryFilter.loading?
+                        <li>Loading...</li>
+                        : categoryFilter.error?
+                        <li>Ooops! Something wrong happened!</li>
+                        :<FilterList {...categoryFilter} 
+                            tag='li'
+                            selected={selectedFilters}/>
+                    }
+                    {
+                        brandFilter.loading?
+                        <li>Loading...</li>
+                        : brandFilter.error?
+                        <li>Ooops! Something wrong happened!</li>
+                        :<FilterList {...brandFilter} 
+                            tag='li'
+                            selected={selectedFilters}/>
+
+                    }
                     <DoubleSlider tag='li'
                         filterName={ratingSlider.filterName}
                         data={{
-                            ...ratingSlider.data, 
-                            selected: selectedRanges[ratingSlider.filterName]
+                            ...ratingSlider, 
+                            ...ranges[ratingSlider.filterName]
                         }}/>
                 </ul>
             </div>

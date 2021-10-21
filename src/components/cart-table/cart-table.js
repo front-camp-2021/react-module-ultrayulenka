@@ -20,7 +20,7 @@ export default function CartTable (props) {
             <thead>
             <tr>
                 <th className="th_product">Product</th>
-                <th sclassName="th_price">Price</th>
+                <th className="th_price">Price</th>
                 <th className="th_quantity">Quantity</th>
                 <th className="th_subtotal text-center">Subtotal</th>
                 <th className="th_btn"></th>

@@ -37,7 +37,7 @@ input:focus{
     height: 80%;
     display: flex;
     justify-content: space-between;
-    margin: 1vh 0 2vh;
+    margin: 1vh 0 0;
 
     @include tablet {
         display: block;

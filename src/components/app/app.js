@@ -17,6 +17,7 @@ export default function App () {
                         routes.map(({exact, path, component}) => {
                             return (
                             <Route 
+                                key={path}
                                 exact={exact} 
                                 path={path} 
                                 component={component}/>);
