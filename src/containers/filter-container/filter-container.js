@@ -54,25 +54,12 @@ export default function FilterContainer () {
                             ...priceSlider, 
                             ...ranges[priceSlider.filterName]
                         }}/>
-                    {
-                        categoryFilter.loading?
-                        <li>Loading...</li>
-                        : categoryFilter.error?
-                        <li>Ooops! Something wrong happened!</li>
-                        :<FilterList {...categoryFilter} 
+                    <FilterList {...categoryFilter} 
                             tag='li'
                             selected={selectedFilters}/>
-                    }
-                    {
-                        brandFilter.loading?
-                        <li>Loading...</li>
-                        : brandFilter.error?
-                        <li>Ooops! Something wrong happened!</li>
-                        :<FilterList {...brandFilter} 
+                    <FilterList {...brandFilter} 
                             tag='li'
                             selected={selectedFilters}/>
-
-                    }
                     <DoubleSlider tag='li'
                         filterName={ratingSlider.filterName}
                         data={{

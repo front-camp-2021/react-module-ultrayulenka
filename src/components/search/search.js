@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
 import { useHistory } from "react-router-dom";
@@ -26,6 +26,10 @@ export default function Search () {
     const debouncedChangeSearchQuery = useDebouncedCallback((value) => {
         dispatch(changeSearchQuery(value));
     }, 500)
+
+    useEffect(() => {
+        setValue(searchQuery);
+    }, [searchQuery])
 
     return (
         <div className="search">

@@ -10,6 +10,8 @@ import { selectParams } from '../../features/params/selectors';
 import CardList from '../../components/card-list';
 import Search from '../../components/search';
 import Pagination from '../../components/pagination'
+import Spinner from '../../components/spinner';
+import ErrorIndicator from '../../components/error-indicator';
 
 import './product-container.scss';
 
@@ -35,9 +37,9 @@ export default function ProductContainer () {
             <Search />
             {
                 loading? 
-                <div>Loading...</div>
+                <Spinner />
                 : error?
-                <div>Oops! Something went wrong</div>
+                <ErrorIndicator />
                 :<CardList 
                 products={
                     products.length  > 0?

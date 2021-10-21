@@ -34,7 +34,7 @@ const paramsInitialState = {
     },
     search: '',
     page: 1,
-    totalPages: 0,
+    totalPages: 10,
     pageLimit: 10
 }
 
