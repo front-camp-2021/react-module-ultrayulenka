@@ -20,6 +20,7 @@ const CLEAR_ALL_FILTERS = 'CLEAR_ALL_FILTERS';
 const CHANGE_PAGE = 'CHANGE_PAGE';
 const CHANGE_TOTAL_PAGES = 'CHANGE_TOTAL_PAGES';
 const CHANGE_PAGE_LIMIT = 'CHANGE_PAGE_LIMIT';
+const CHANGE_TOTAL_FOUND = 'CHANGE_TOTAL_FOUND';
 
 function getAllFilters () {
     return (dispatch) => {
@@ -82,6 +83,13 @@ function changeTotalPages (payload) {
     }
 };
 
+function changeTotalFound (payload) {
+    return {
+        type: CHANGE_TOTAL_FOUND,
+        payload
+    }
+}
+
 function changeSearchQuery (payload) {
     return {
         type: CHANGE_SEARCH_QUERY,
@@ -137,6 +145,8 @@ export {
     GET_FILTER_SUCCESS,
     GET_FILTER_LOADING,
     GET_FILTER_ERROR,
+    CHANGE_TOTAL_FOUND,
+    changeTotalFound,
     getAllFilters,
     getFilterSuccess,
     getFilterLoading,

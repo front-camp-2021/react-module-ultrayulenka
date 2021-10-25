@@ -18,7 +18,14 @@ export default function MainContainer () {
 
     const dispatch = useDispatch();
 
-    const { page, totalPages, selectedFilters, ranges, search } = useSelector(selectParams);
+    const { 
+        page,
+        totalPages,
+        selectedFilters,
+        ranges,
+        search,
+        totalFound 
+    } = useSelector(selectParams);
 
     useEffect(() => {
         dispatch(getFilteredProducts());
@@ -32,7 +39,8 @@ export default function MainContainer () {
         <main className="main">
             <Search 
                 searchQuery={search}
-                onChange={debouncedChangeSearchQuery}/>
+                onChange={debouncedChangeSearchQuery}
+                total={totalFound}/>
             <ProductContainer 
                 products={useSelector(selectProducts)} 
                 loading={useSelector(selectLoadingStatus)} 

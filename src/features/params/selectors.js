@@ -2,6 +2,8 @@ export const selectParams = (state) => state.params;
 
 export const selectTotalPages = (state) => state.params.totalPages;
 
+export const selectTotalFound = (state) => state.params.totalFound;
+
 export const selectCurrentPage = (state) => state.params.page;
 
 export const selectPageLimit = (state) => state.params.pageLimit;

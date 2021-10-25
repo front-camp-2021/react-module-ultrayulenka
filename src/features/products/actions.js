@@ -4,7 +4,7 @@ import {
 } from '../../api'
 
 import {
-    changeTotalPages
+    changeTotalFound
 } from '../params/actions';
 
 const GET_ALL_PRODUCTS = 'GET_ALL_PRODUCTS';
@@ -28,15 +28,12 @@ function getAllProducts () {
 function getFilteredProducts () {
     return (dispatch, getState) => {
         dispatch(getProductsLoading());
-        const { selectedFilters, ranges, page, pageLimit = 10, search, totalPages = 0 } = getState().params;
+        const { selectedFilters, ranges, page, pageLimit = 10, search } = getState().params;
 
         fetchFilteredProducts({ filters: selectedFilters, ranges, page, pageLimit, search }).then(res => {
             const [products, total] = res;
             dispatch(getProductsSuccess(products));
-            const newTotalPages = Math.ceil(total/pageLimit);
-            if(newTotalPages !== totalPages) {
-                dispatch(changeTotalPages(Math.ceil(total/pageLimit)))
-            }
+            dispatch(changeTotalFound(total));
         }).catch(() => {
             dispatch(getProductsError())
         })

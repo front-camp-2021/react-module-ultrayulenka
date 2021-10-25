@@ -10,7 +10,8 @@ import {
     CHANGE_SEARCH_QUERY, 
     GET_FILTER_SUCCESS,
     GET_FILTER_LOADING,
-    GET_FILTER_ERROR
+    GET_FILTER_ERROR,
+    CHANGE_TOTAL_FOUND
 } from './actions';
 
 const paramsInitialState = {
@@ -59,7 +60,8 @@ const paramsInitialState = {
     search: '',
     page: 1,
     totalPages: 10,
-    pageLimit: 10
+    pageLimit: 10,
+    totalFound: 100
 }
 
 function params (state = paramsInitialState, action) {
@@ -87,6 +89,14 @@ function params (state = paramsInitialState, action) {
             return {
                 ...state,
                 totalPages: action.payload
+            }
+        }
+
+        case CHANGE_TOTAL_FOUND: {
+            return {
+                ...state,
+                totalFound: action.payload,
+                totalPages: Math.ceil(action.payload / state.pageLimit)
             }
         }
 

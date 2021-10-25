@@ -3,9 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import { WISHLIST } from '../../routes'
 
-import { useSelector } from "react-redux";
-import { selectSearch } from '../../features/params/selectors';
-
 import Button from '../button'
 
 import icon from './icon.svg';
@@ -15,7 +12,7 @@ import './search.scss'
 
 export default function Search (props) {
 
-    const { searchQuery = '', onChange = () => {} } = props;
+    const { searchQuery = '', onChange = () => {}, total = 0 } = props;
 
     const [value, setValue] = useState(searchQuery);
 
@@ -28,7 +25,7 @@ export default function Search (props) {
     return (
         <div className="search">
             <div className="search__header">
-                <span className="search__text">7,618 results found</span>
+                <span className="search__text">{total} results found</span>
                 <Button 
                     size="small"
                     color="primary"
@@ -36,7 +33,7 @@ export default function Search (props) {
                     <img className="button__icon" src={heart} alt="Go to wishlist"/>
                 </Button>
             </div>
-            <form className="searchbar">
+            <form className="searchbar" onSubmit={event => event.preventDefault()}>
                 <input className="searchbar__input" 
                        type="text" 
                        placeholder="Search"
@@ -45,7 +42,7 @@ export default function Search (props) {
                             setValue(event.target.value);
                             onChange(event.target.value);
                        }}/>
-                <button className="search-button "type="submit">
+                <button className="search-button" type="submit">
                     <img className="searchbar__icon" src={icon} alt="Search"/>
                 </button>
             </form>
