@@ -1,10 +1,10 @@
-const prepareQuery = ({ filters = null, ranges = null, search = null, page = 1, pageLimit = 10 }) => {
+const prepareQuery = ({ filters = [], ranges = null, search = null, page = 1, pageLimit = 10 }) => {
     const query = new URLSearchParams();
 
     query.set('_page', page);
     query.set('_limit', pageLimit);
 
-    if(filters && filters.length > 0) {
+    if(filters.length > 0) {
         const entries = filters.map(filter => filter.split('='));
         entries.forEach(entry => {
             const [key, value] = entry;

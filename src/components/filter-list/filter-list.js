@@ -9,27 +9,36 @@ import './filter-list.scss'
 
 export default function FilterList (props) {
 
-    const { title = '', list = [], tag = '', selected, loading, error } = props;
-
-
+    const { 
+        title = '',
+        list = [],
+        tag = '',
+        selected,
+        loading, 
+        error,
+        onChange 
+    } = props;
     const CustomTag = tag? tag : 'div';  
 
     return (
         <CustomTag className="filter-item">
-            <h4 className="filter-item__title">{title}</h4>
+            <h4 className="filter-item__title">{title? title : 'No title'}</h4>
             <ul className="options-list">
                 {
                     loading?
                     <Spinner />
                     : error?
                     <ErrorIndicator />
-                    :list.map(item => {
+                    : list.length > 0?
+                    list.map(item => {
                         return (
                         <FilterItem 
                             {...item} 
+                            onChange={onChange}
                             key={item.value}
                             checked={selected.includes(item.value)}/>)
                     })
+                    : <li>No filters to show</li>
                 }
             </ul>
         </CustomTag>

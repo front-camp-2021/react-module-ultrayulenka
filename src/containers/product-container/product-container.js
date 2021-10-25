@@ -1,58 +1,61 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { useSelector, useDispatch } from "react-redux";
-import { getFilteredProducts } from '../../features/products/actions';
-import { selectProducts, selectErrorStatus, selectLoadingStatus } from '../../features/products/selectors';
 import { selectProductsInWishlistIds } from '../../features/wishlist/selectors';
 import { selectProductsInCartIds } from '../../features/cart/selectors';
-import { selectParams } from '../../features/params/selectors';
+import { changeWishlistStatus } from '../../features/wishlist/actions'
+import { addToCart } from "../../features/cart/actions";
 
 import CardList from '../../components/card-list';
-import Search from '../../components/search';
-import Pagination from '../../components/pagination'
 import Spinner from '../../components/spinner';
 import ErrorIndicator from '../../components/error-indicator';
 
 import './product-container.scss';
 
-export default function ProductContainer () {
+export default function ProductContainer (props) {
+
+    const {
+        products = [],
+        loading = false,
+        error = false
+    } = props;
+
     const dispatch = useDispatch();
-
-    const products = useSelector(selectProducts);
-    const loading = useSelector(selectLoadingStatus);
-    const error = useSelector(selectErrorStatus);
-
-    const params = useSelector(selectParams); 
-    const { page, totalPages } = params;
 
     const whishlistIds = useSelector(selectProductsInWishlistIds);
     const cartIds = useSelector(selectProductsInCartIds);
 
-    useEffect(() => {
-        dispatch(getFilteredProducts());
-    },[params])
+    const onWishlistStatusChange = ({ id = '', images = [], title = '', rating = 0, price = 0 }) => {
+        dispatch(changeWishlistStatus({id, images, title, rating, price}));
+    }
+
+    const onAddToCartClick = ({ id = '', images = [], title = '', price = 0 }) => {
+        dispatch(addToCart({id, images, title, price}));
+    }
+
+
+    if(loading) {
+        return <Spinner />;
+    }
+
+    if(error) {
+        return <ErrorIndicator />
+    }
+
 
     return (
-        <main className="main">
-            <Search />
-            {
-                loading? 
-                <Spinner />
-                : error?
-                <ErrorIndicator />
-                :<CardList 
-                products={
-                    products.length  > 0?
-                    products.map(product => {
-                    return {
-                        ...product,
-                        inWishlist: whishlistIds.includes(product.id),
-                        inCart: cartIds.includes(product.id)
-                    }}) 
-                    : []
-                }/>  
-            }   
-            <Pagination page={page} totalPages={totalPages}/>
-        </main>
+        <CardList 
+            products={
+                products.length  > 0?
+                products.map(product => {
+                return {
+                    ...product,
+                    inWishlist: whishlistIds.includes(product.id),
+                    inCart: cartIds.includes(product.id)
+                }}) 
+                : []
+            }
+            addToCart={onAddToCartClick}
+            changeWishlistStatus={onWishlistStatusChange}/> 
     )
 }

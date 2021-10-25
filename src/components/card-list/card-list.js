@@ -6,14 +6,16 @@ import './card-list.scss'
 
 export default function CardList (props) {
     
-   const { products = [] } = props;
+   const { products = [], addToCart = () => {}, changeWishlistStatus = () => {} } = props;
 
     const cards = products.map(item => {
         return <Card 
                 {...item} 
                 tag='li' 
                 className="cards-list__item"  
-                key={item.id}/>
+                key={item.id}
+                addToCart={addToCart}
+                changeWishlistStatus={changeWishlistStatus}/>
     })
 
     return (

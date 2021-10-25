@@ -28,15 +28,11 @@ function getAllProducts () {
 function getFilteredProducts () {
     return (dispatch, getState) => {
         dispatch(getProductsLoading());
-        const params = getState().params;
+        const { selectedFilters, ranges, page, pageLimit = 10, search, totalPages = 0 } = getState().params;
 
-        fetchFilteredProducts(params).then(res => {
+        fetchFilteredProducts({ filters: selectedFilters, ranges, page, pageLimit, search }).then(res => {
             const [products, total] = res;
-
             dispatch(getProductsSuccess(products));
-
-            const { pageLimit = 10, totalPages = 0 } = params
-
             const newTotalPages = Math.ceil(total/pageLimit);
             if(newTotalPages !== totalPages) {
                 dispatch(changeTotalPages(Math.ceil(total/pageLimit)))

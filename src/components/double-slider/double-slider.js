@@ -1,21 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useDebouncedCallback } from 'use-debounce';
-
-import { useDispatch } from "react-redux";
-import { changeRangeToValue, changeRangeFromValue } from '../../features/params/actions';
 
 import { roundValue, checkTo, checkFrom } from '../../utils'
+
 import './double-slider.scss'
 
 
 export default function DoubleSlider (props) {
     const {
-        data = {},
-        filterName = '',
-        tag = ''
-    } = props;
-
-    const {
+        title = '',
         min = 100,
         max = 200,
         formatValue = value => value,
@@ -23,14 +15,14 @@ export default function DoubleSlider (props) {
           from: min,
           to: max
         },
-        precision = 1
-    } = data;
+        precision = 0,
+        tag = '',
+        onChange = () => {}
+    } = props;
 
     const sliderRef = useRef();
     const thumbLeftRef = useRef();
     const thumbRightRef = useRef();
-
-    const dispatch = useDispatch();
 
     const [activeThumb, setActiveThumb] = useState('');
 
@@ -41,20 +33,6 @@ export default function DoubleSlider (props) {
         setFrom(selected.from);
         setTo(selected.to);
     }, [selected])
-
-    const debouncedChangeRangeValue = useDebouncedCallback(({ value, hint='' }) => {
-        switch(hint) {
-            case 'to': {
-                dispatch(changeRangeToValue({ name: filterName, to: value, precision }));
-                break;
-            }
-            case 'from': {
-                dispatch(changeRangeFromValue({ name: filterName, from: value, precision }));
-                break;
-            }
-            default: return;
-        }
-    }, 500)
 
     const CustomTag = tag? tag : 'div';
 
@@ -113,7 +91,7 @@ export default function DoubleSlider (props) {
         const newFrom = checkFrom({ min, to, from: min + (shiftX / fullWidth * range)});
         const roundedFromValue = roundValue({value: newFrom, precision})
         setFrom(roundedFromValue);
-        debouncedChangeRangeValue({value: roundedFromValue, hint: 'from'})
+        onChange({value: roundedFromValue, hint: 'from', title, precision});
     }
 
     const onMoveRight = (event) => {
@@ -122,7 +100,7 @@ export default function DoubleSlider (props) {
         const newTo = checkTo({ max, from, to: max - (shiftX / fullWidth * range)});
         const roundedToValue = roundValue({value: newTo, precision})
         setTo(roundedToValue);
-        debouncedChangeRangeValue({value: roundedToValue, hint: 'to'})
+        onChange({value: roundedToValue, hint: 'to', title, precision});
     }
 
     const onPointerUpLeft = () => {
@@ -160,7 +138,7 @@ export default function DoubleSlider (props) {
                     onPointerUpLeft :
                     activeThumb === 'right'?
                     onPointerUpRight : () => {}}>
-            <h4 className="filter-item__title">{filterName}</h4>
+            <h4 className="filter-item__title">{title}</h4>
             <div className="range-slider">
                 <span>{formatValue(from)}</span>
                 <div ref={sliderRef} className="range-slider__inner">

@@ -1,3 +1,12 @@
+import {
+    fetchCategories,
+    fetchBrands
+} from '../../api'
+
+const GET_ALL_FILTERS = 'GET_ALL_FILTERS';
+const GET_FILTER_SUCCESS = 'GET_FILTER_SUCCESS';
+const GET_FILTER_LOADING = 'GET_FILTER_LOADING';
+const GET_FILTER_ERROR = 'GET_FILTER_ERROR';
 const ADD_FILTER = 'ADD_FILTER';
 const REMOVE_FILTER = 'REMOVE_FILTER';
 
@@ -11,6 +20,46 @@ const CLEAR_ALL_FILTERS = 'CLEAR_ALL_FILTERS';
 const CHANGE_PAGE = 'CHANGE_PAGE';
 const CHANGE_TOTAL_PAGES = 'CHANGE_TOTAL_PAGES';
 const CHANGE_PAGE_LIMIT = 'CHANGE_PAGE_LIMIT';
+
+function getAllFilters () {
+    return (dispatch) => {
+        dispatch(getFilterLoading('Category'));
+        dispatch(getFilterLoading('Brand'));
+
+        fetchCategories().then(res => {
+            dispatch(getFilterSuccess({ list: res, name: 'Category'}))
+        }).catch(() => {
+            dispatch(getFilterError('Category'));
+        });
+
+        fetchBrands().then(res => {
+            dispatch(getFilterSuccess({ list: res, name: 'Brand'}))
+        }).catch(() => {
+            dispatch(getFilterError('Brand'));
+        });
+    }
+};
+
+function getFilterSuccess (payload) {
+    return {
+        type: GET_FILTER_SUCCESS,
+        payload
+    }
+}
+
+function getFilterLoading (payload) {
+    return {
+        type: GET_FILTER_LOADING,
+        payload
+    }
+}
+
+function getFilterError (payload) {
+    return {
+        type: GET_FILTER_ERROR,
+        payload
+    }
+}
 
 function changePage (payload) {
     return {
@@ -84,6 +133,14 @@ export {
     CHANGE_RANGE_TO_VALUE,
     CHANGE_RANGE_FROM_VALUE,
     CHANGE_SEARCH_QUERY, 
+    GET_ALL_FILTERS,
+    GET_FILTER_SUCCESS,
+    GET_FILTER_LOADING,
+    GET_FILTER_ERROR,
+    getAllFilters,
+    getFilterSuccess,
+    getFilterLoading,
+    getFilterError,
     changePage,
     changePageLimit,
     changeTotalPages,

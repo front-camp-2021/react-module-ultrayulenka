@@ -10,7 +10,7 @@ export default function ErrorIndicator () {
             <div className="error-indicator">
                 <img className="error-indicator__icon" src={error} alt='Error'/>
                 <div className="error-indicator__text">
-                    <h2>Something gone wrong...</h2>
+                    <h2>Error! Something gone wrong...</h2>
                     <p>Sorry, we can't load this resource now. Please try again later.</p>
                 </div>
             </div>

@@ -6,6 +6,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:coverage": "react-scripts test --coverage",
     "eject": "react-scripts eject",
     "start:backend": "npm run json-server -- --port 3001 --watch ./server/db.json",
     "json-server": "json-server"
@@ -35,6 +36,7 @@
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.23.0",
     "bootstrap": "^5.1.3",
+    "enzyme": "^3.11.0",
     "font-awesome": "^4.7.0",
     "json-server": "^0.16.3",
     "react": "^17.0.2",
@@ -44,6 +46,7 @@
     "react-scripts": "^3.4.4",
     "redux": "^4.1.1",
     "redux-devtools-extension": "^2.13.9",
+    "redux-mock-store": "^1.5.4",
     "redux-thunk": "^2.3.0",
     "sass": "^1.42.1",
     "use-debounce": "^7.0.0",
