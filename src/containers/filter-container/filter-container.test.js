@@ -5,7 +5,6 @@ import {
   screen
 } from "@testing-library/react";
 
-import userEvent from "@testing-library/user-event";
 
 import { Provider } from "react-redux";
 import thunk from 'redux-thunk'
@@ -76,8 +75,6 @@ describe('Filter list', () => {
                 <FilterContainer />
             </Provider>
         );
-
-        screen.debug();
 
         const list = getByTestId('list');
         const checkboxes = getAllByRole('checkbox');

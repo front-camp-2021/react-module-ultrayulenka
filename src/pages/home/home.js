@@ -4,7 +4,6 @@ import { useHistory } from "react-router-dom";
 import { ELECTRONICS } from '../../routes'
 
 import Button from '../../components/button'
-import Card from '../../components/card'
 
 import banner from './banner.jpeg'
 import './home.scss'

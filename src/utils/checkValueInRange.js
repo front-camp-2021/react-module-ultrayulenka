@@ -1,5 +1,5 @@
 export const checkFrom = ({ min, from, to }) => {
-    if(from < min) {
+    if(typeof from !== 'number' || from < min) {
         return min;
     } 
     const res = from - min;
@@ -11,7 +11,7 @@ export const checkFrom = ({ min, from, to }) => {
 }
 
 export const checkTo = ({ max, from, to }) => {
-    if(to > max) {
+    if(typeof to !== 'number' || to > max) {
         return max;
     }
     const res = max - to;

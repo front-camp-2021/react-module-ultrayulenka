@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useDebouncedCallback } from 'use-debounce';
 
 import { useHistory } from "react-router-dom";
 import { WISHLIST } from '../../routes'
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectSearch } from '../../features/params/selectors';
-import { changeSearchQuery } from '../../features/params/actions';
 
 import Button from '../button'
 
@@ -15,17 +13,13 @@ import heart from './heart.svg';
 
 import './search.scss'
 
-export default function Search () {
+export default function Search (props) {
 
-    const searchQuery = useSelector(selectSearch);
+    const { searchQuery = '', onChange = () => {} } = props;
+
     const [value, setValue] = useState(searchQuery);
 
-    const dispatch = useDispatch();
     const history = useHistory();
-
-    const debouncedChangeSearchQuery = useDebouncedCallback((value) => {
-        dispatch(changeSearchQuery(value));
-    }, 500)
 
     useEffect(() => {
         setValue(searchQuery);
@@ -49,7 +43,7 @@ export default function Search () {
                        value={value}
                        onChange={(event) => {
                             setValue(event.target.value);
-                            debouncedChangeSearchQuery(event.target.value);
+                            onChange(event.target.value);
                        }}/>
                 <button className="search-button "type="submit">
                     <img className="searchbar__icon" src={icon} alt="Search"/>

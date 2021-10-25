@@ -8,8 +8,8 @@ import './double-slider.scss'
 export default function DoubleSlider (props) {
     const {
         title = '',
-        min = 100,
-        max = 200,
+        min = 0,
+        max = 0,
         formatValue = value => value,
         selected = {
           from: min,
@@ -26,12 +26,12 @@ export default function DoubleSlider (props) {
 
     const [activeThumb, setActiveThumb] = useState('');
 
-    const [from, setFrom] = useState(selected.from);
-    const [to, setTo] = useState(selected.to);
+    const [from, setFrom] = useState(checkFrom({min, to: selected.to, from: selected.from}));
+    const [to, setTo] = useState(checkTo({max, from, to: selected.to}));
 
     useEffect(() => {
-        setFrom(selected.from);
-        setTo(selected.to);
+        setFrom(checkFrom({min, to, from: selected.from}));
+        setTo(checkTo({max, from, to: selected.to}));
     }, [selected])
 
     const CustomTag = tag? tag : 'div';
@@ -66,23 +66,8 @@ export default function DoubleSlider (props) {
 
 
     const range = max > min? max - min : 0;
-    let left = 0;
-    let right = 0;
-
-    const calcLeft = ({ min, from, range }) => {
-        const left = from - min <= 0? 0 : (from - min) / range * 100;
-        if(left + right > 100) return 100 - right;
-        return left;
-    }
-
-    const calcRight = ({ max, to, range}) => {
-        const right = max - to <= 0? 0 : (max - to) / range * 100;
-        if(right + left > 100) return 100 - left;
-        return right;
-    }
-
-    left = calcLeft({min, from, range});
-    right = calcRight({max, to, range});
+    const left = (from - min) / range * 100;
+    const right = (max - to) / range * 100;
 
     const onMoveLeft = (event) => {
         const { leftBoundry, fullWidth } = getSliderProps();
@@ -129,7 +114,7 @@ export default function DoubleSlider (props) {
     }
 
     return (
-        <CustomTag className="filter-item"
+        <CustomTag className="filter-item" data-testid='slider'
         onPointerMove={ activeThumb === 'left'?
                         onMoveLeft :
                         activeThumb === 'right'?
@@ -138,9 +123,9 @@ export default function DoubleSlider (props) {
                     onPointerUpLeft :
                     activeThumb === 'right'?
                     onPointerUpRight : () => {}}>
-            <h4 className="filter-item__title">{title}</h4>
+            <h4 className="filter-item__title">{title? title: 'No title'}</h4>
             <div className="range-slider">
-                <span>{formatValue(from)}</span>
+                <span data-testid='from-value'>{formatValue(from)}</span>
                 <div ref={sliderRef} className="range-slider__inner">
                     <span className="range-slider__progress" 
                           style={{left: `${left}%`, right: `${right}%`}}/>
@@ -153,7 +138,7 @@ export default function DoubleSlider (props) {
                           style={{right: `${right}%`}}
                           onPointerDown={onPointerDownRight}/>
                 </div>
-                <span>{formatValue(to)}</span>
+                <span data-testid='to-value'>{formatValue(to)}</span>
             </div>
         </CustomTag>
     )
