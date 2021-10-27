@@ -241,8 +241,8 @@ function params (state = paramsInitialState, action) {
                 },
                 search: '',
                 page: 1,
-                totalPages: 10,
-                pageLimit: 10
+                totalPages: 12,
+                pageLimit: 9
             }
         }
 
