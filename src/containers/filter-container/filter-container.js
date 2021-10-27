@@ -79,16 +79,6 @@ export default function FilterContainer () {
                     
     return (
         <aside className="sidebar">
-            <div className="sidebar__header">
-                <h3 className="section-title">
-                    Filters
-                </h3>
-                <Button size="small"
-                    className="sidebar__button_small">
-                    <div className="arrows arrows_left"></div>
-                    <div className="arrows arrows_down"></div>
-                </Button>
-            </div>
             <div className="sidebar__container">
                 <ul className="filter-list" data-testid="list">
                     {

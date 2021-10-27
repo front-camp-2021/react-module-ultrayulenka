@@ -1,0 +1,99 @@
+@use "../../scss-utils/variables" as *;
+@use "../../scss-utils/mixins" as *;
+@use "../../scss-utils/media-mixins" as *;
+
+.heading {
+    display: flex;
+    justify-content: space-between;
+    margin: 1vh 0 0;
+    gap: 2% 0;
+
+    &__sidebar {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1vh;
+
+        &_open {
+            width: 30%;
+        }
+
+        &_closed {
+            width: 15%;
+        }
+
+        .section-title {
+            @include text(21px);
+            align-self: center;
+        }
+    
+
+        @include tablet {
+            margin: 0;
+        }
+
+        @include tablet {
+            width: 100%;
+            height: fit-content;
+            padding: 5px;
+            background-color: $bg-color-container;
+            margin-bottom: 2vh;
+            border-radius: 8px;
+            box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.135);
+        }
+    }
+
+    &__show-sidebar-btn {
+
+        .arrows {
+            &_down,
+            &_up {
+                display: none;
+        
+                @include tablet {
+                    display: block;
+                }
+            }
+        
+            &_left,
+            &_right {
+                @include tablet {
+                    display: none;
+                }
+            }
+        
+        }
+
+        @include tablet {
+            box-shadow: none;
+            background-color: transparent;
+        }
+    }
+
+    &__products {
+        color: $font-color;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1vh;
+
+        &_open {
+            width: 68%;
+        }
+
+        &_closed {
+            width: 83%;
+        }
+
+        .total {
+            align-self: center;
+            @include text(21px);
+        }
+
+        @include tablet {
+            width: 100%;
+        }
+    }
+
+    @include tablet {
+        display: block;
+    }
+}

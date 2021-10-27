@@ -20,13 +20,13 @@
     &__list {
         display: flex;
         list-style: none;
-        justify-content: space-around;
+        justify-content: space-between;
         align-items: center;
         background-color: $secondary-color;
         border-radius: 20px;
 
         @include mobile {
-            width: 60%;
+            width: 50%;
         }
     }
 

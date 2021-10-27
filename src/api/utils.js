@@ -1,4 +1,4 @@
-const prepareQuery = ({ filters = [], ranges = null, search = null, page = 1, pageLimit = 10 }) => {
+const prepareQuery = ({ filters = [], ranges = null, search = null, page = 1, pageLimit = 9 }) => {
     const query = new URLSearchParams();
 
     query.set('_page', page);

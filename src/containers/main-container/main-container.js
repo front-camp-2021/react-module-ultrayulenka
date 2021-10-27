@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 
 import { useSelector, useDispatch } from "react-redux";
+import { selectParams } from '../../features/params/selectors';
 import { getFilteredProducts } from '../../features/products/actions';
 import { selectProducts, selectErrorStatus, selectLoadingStatus } from '../../features/products/selectors';
-import { selectParams } from '../../features/params/selectors';
 import { changeSearchQuery } from '../../features/params/actions';
 
 import Search from '../../components/search';
@@ -23,8 +23,7 @@ export default function MainContainer () {
         totalPages,
         selectedFilters,
         ranges,
-        search,
-        totalFound 
+        search
     } = useSelector(selectParams);
 
     useEffect(() => {
@@ -36,16 +35,15 @@ export default function MainContainer () {
     }, 500)
 
     return (
-        <main className="main">
+        <>
             <Search 
                 searchQuery={search}
-                onChange={debouncedChangeSearchQuery}
-                total={totalFound}/>
+                onChange={debouncedChangeSearchQuery} />
             <ProductContainer 
                 products={useSelector(selectProducts)} 
                 loading={useSelector(selectLoadingStatus)} 
                 error={useSelector(selectErrorStatus)}/>
             <Pagination page={page} totalPages={totalPages}/>
-        </main>
+        </>
     )
 }

@@ -2,11 +2,12 @@
 
 .home {
     margin: 5vh auto 0 auto;
-    width: 700px;
+    max-width: 700px;
 }
 
 .home__banner {
     @extend %small-shadow;
+    max-width: 100%;
 }
 
 .redirect-button {
