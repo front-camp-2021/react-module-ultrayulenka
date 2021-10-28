@@ -1,0 +1,16 @@
+@use "../../scss-utils/mixins" as *;
+
+.home {
+    margin: 5vh auto 0 auto;
+    max-width: 700px;
+}
+
+.home__banner {
+    @extend %small-shadow;
+    max-width: 100%;
+}
+
+.redirect-button {
+    margin: 10px auto 0 auto;
+    text-transform: uppercase;
+}

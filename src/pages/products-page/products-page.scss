@@ -1,0 +1,39 @@
+@use "../../scss-utils/media-mixins" as *;
+
+.content {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    justify-content: space-between;
+
+    @include tablet {
+        display: block;
+    }
+}
+
+.main {
+    width: 68%;
+
+    @include tablet {
+        width: 100%;
+    }
+}
+
+.main_full-width {
+    width: 100%;
+
+    .cards-list__item {
+        @include desktop {
+            flex: 0 0 32%;
+        }
+
+        @include tablet {
+            flex: 0 0 49%;
+        }
+
+        @include mobile {
+            flex: 0 0 100%;
+            margin: 0 auto;
+        }
+    }
+}
